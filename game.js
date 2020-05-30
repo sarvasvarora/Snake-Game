@@ -82,14 +82,26 @@ function updateSnakePosition() {
             break;
     }
 }
+//fuction to play again
+function playAgain() {
+    let playAgainButton = document.querySelector("#play-again-button");
+    let playAgainDiv = document.querySelector("#play-again-div");
+    playAgainDiv.classList.remove("hide");
+    playAgainButton.classList.add("display-button");
+    playAgainDiv.classList.add("display-div");
+    playAgainButton.addEventListener("click", () => {
+        window.location.reload();
+    });
+}
 
-// function for gamem over
+// function for game over
 function gameOver() {
     dead.play();
     clearInterval(game);
     let finalScore = score;
     context.font = "30px sans-serif";
     score = `GAME OVER! Final Score: ${finalScore}`;
+    playAgain();
     return;
 }
 
