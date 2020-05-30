@@ -20,6 +20,9 @@ const dead = new Audio("audio/dead.mp3");
 // one unit on game board = 32px 
 const box = 32;
 
+// snake speed
+let speed = 5;
+
 // score
 let score = 0
 
@@ -113,6 +116,12 @@ function check() {
         eat.play();
         score++;
         generateFood();
+        // after every 3 levels, increase speed. max speed = 15
+        if (score % 3 === 0 && speed <= 15) {
+            speed++;
+            clearInterval(game);
+            game = setInterval(draw, 1000 / speed);
+        }
         return;
     }
     // if snake touches the boundary, game over
@@ -186,7 +195,7 @@ window.addEventListener("keydown", (event) => {
 
 // generate first random apple and start game
 generateFood();
-let game = setInterval(draw, 100);
+let game = setInterval(draw, 1000 / speed);
 
 /*
 CANVAS PROPERTIES USED
