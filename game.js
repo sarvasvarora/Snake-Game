@@ -83,29 +83,34 @@ function updateSnakePosition() {
     }
 }
 
+// function for gamem over
+function gameOver() {
+    dead.play();
+    clearInterval(game);
+    let finalScore = score;
+    context.font = "30px sans-serif";
+    score = `GAME OVER! Final Score: ${finalScore}`;
+    return;
+}
+
 // function to check collisions and food being eaten
 function check() {
     // if snake head lands on food, level up the snake (i.e. change snake position without popping an element)
     if (snake[0].x === food.x && snake[0].y === food.y) {
         updateSnakePosition();
+        eat.play();
         score++;
         generateFood();
         return;
     }
+    // if snake touches the boundary, game over
     if (snake[0].x < box || snake[0].x > 17 * box || snake[0].y < 3 * box || snake[0].y > 17 * box) {
-        clearInterval(game);
-        let finalScore = score;
-        context.font = "30px sans-serif";
-        score = `GAME OVER! Final Score: ${finalScore}`;
-        return;
+        gameOver();
     }
+    // if snake touches itself, game over
     for (let i = 1; i < snake.length; i++) {
         if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
-            clearInterval(game);
-            let finalScore = score;
-            context.font = "30px sans-serif";
-            score = `GAME OVER! Final Score: ${finalScore}`;
-            return;
+            gameOver();
         }
     }
 }
@@ -141,21 +146,25 @@ window.addEventListener("keydown", (event) => {
         case "ArrowLeft":
             if (direction !== "right") {
                 direction = "left";
+                left.play();
             }
             break;
         case "ArrowUp":
             if (direction !== "down") {
                 direction = "up";
+                up.play();
             }
             break;
         case "ArrowRight":
             if (direction !== "left") {
                 direction = "right";
+                right.play();
             }
             break;
         case "ArrowDown":
             if (direction !== "up") {
                 direction = "down";
+                down.play();
             }
             break;
         default:
@@ -168,41 +177,18 @@ generateFood();
 let game = setInterval(draw, 100);
 
 /*
-canvas.getContext("2d")
+CANVAS PROPERTIES USED
+    canvas.getContext("2d")
 
-context.fillStyle
-context.fillRect
+    context.fillStyle
+    context.fillRect
 
-context.strokeStyle
-context.strokeRect
+    context.strokeStyle
+    context.strokeRect
 
-context.drawImage
+    context.drawImage
 
-context.fillStyle
-context.font
-context.fillText
-
-
-*/
-
-/*
-LOCAL
-    git init
-    git config --global user.name 'github-username'
-    git config --global user.email 'github-email'
-    git add <filename> OR git add . [for all changes]
-    git status [to see current working tree i.e. things ready to be committed]
-    git commit -m 'commit message'
-
-    git branch <branch-name> [to create a new branch]
-    git checkout <branch-name> [to switch from master to another branch named <branch-name>]
-
-    git branch -b <new-branch-name> [shorthand for above two commands. use this for creating a new branch and going there simultaneously]
-
-
-REMOTE
-    git remote add origin -u https://...
-    git remote show origin
-    git push -u origin <branch-name> [branch-name would be master if pushing directly to master branch]
-    git pull origin --rebase [use this to pull files from remote repository if it is not in sync with local repository]
+    context.fillStyle
+    context.font
+    context.fillText
 */
